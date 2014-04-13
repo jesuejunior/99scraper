@@ -1,0 +1,8 @@
+lxml
+requests
+splinter
+Alchemytools==0.2
+SQLAlchemy==0.7.8
+mock==1.0b1
+nose==1.2.1
+psycopg2
