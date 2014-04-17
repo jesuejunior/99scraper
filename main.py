@@ -12,28 +12,28 @@ from splinter import Browser
 from lxml import etree
 
 company_xpath = {
-        "title": ["//div[@class='row']/aside[@class='aside-company']/div[@class='aside-company-inner affix-top']/div[1]/header/h1[@class='company-title']/a"],
-        "rank": ["//aside[@class='aside-company']/div[@class='aside-company-inner affix']/div[1]/div[@class='company-evaluation']/div[@class='company-evaluation-score has-lg-text']"],
-        "vacancy": ["//div[@class='square-box is-half is-odd'][2]/div[@class='square-box-body']/b"],
-        "follows": ["//div[@class='square-box is-half'][1]/div[@class='square-box-body']/b[@class='total-followers']"],
+        "title": ["//h1[@class='company-title']/a"],
+        "rank": ["//aside[@class='aside-company']//div[@class='company-evaluation']//div[@class='company-evaluation-score has-lg-text']"],
+        "vacancy": ["//aside[@class='aside-company']//div[@class='company-aside-actions']/div/div[4]//b"],
+        "follows": ["//aside[@class='aside-company']//div[@class='company-aside-actions']//div[@class='square-box-body']/b[@class='total-followers']"],
         "mission": ["//div[@class='panel panel-default'][1]/div[@class='panel-body']/div[@class='panel-body-section'][1]/p"],
-        "about": ["//div[@class='panel-body']/div[@class='panel-body-section'][2]/p",
-                  "//main/section[@class='section section-company']/div[@class='panel panel-default'][1]/div[@class='panel-body']/div[@class='panel-body-section']/p"],
-        "thumb": ["//div[@class='aside-company-inner affix-top']/a[@class='company-logo square-box']/div[@class='square-box-body']/img/@src"],
+        "about": ["//div[@class='panel-body']/div[@class='panel-body-section'][2]/p"],
+        "thumb": ["//a[@class='company-logo square-box']//img/@src"],
         }
 
-def catch_metadata(xpath, tree):
-    go_return = None
 
+def catch_metadata(xpath, tree):
     for el in xpath:
+        go_return = []
         elements = tree.xpath(el)
         if elements:
             for el in elements:
-                for text in el.itertext(with_tail=True):
-                    clean_text = text
-                    if clean_text:
-                        go_return = clean_text
-    return go_return
+                if isinstance(el, (basestring, unicode)):
+                    go_return = [el]
+                else:
+                    go_return += [text for text in el.itertext(with_tail=True)]
+
+    return "".join(go_return)
 
 html = ""
 res = requests.get('https://www.99jobs.com/users/sign_in', auth=HTTPBasicAuth('talkto@jesuejunior.com', 'mamute22'))
@@ -55,11 +55,10 @@ for comp in LIST_COMPANY:
         company = {}
         # profile['username'] = user['username']
 
-        for key,value in company_xpath.iteritems():
+        for key, value in company_xpath.iteritems():
             company[key] = catch_metadata(value, tree)
 
         companies.append(company)
-
         # company_create(company)
         print company['title']
         print company['rank']

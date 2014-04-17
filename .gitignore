@@ -1,0 +1,62 @@
+# python ignores bootstrap
+*.pyc
+*.swp
+*~
+cscope*
+*.pyo
+_build
+.coverage
+.DS_Store
+.ropeproject
+*.py[co]
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+var
+sdist
+develop-eggs
+.installed.cfg
+conf_local.py
+settings_local.py
+
+# Installer logs
+pip-log.txt
+
+# Thumbnails
+*.db
+
+# Unit test / coverage reports
+.coverage
+.tox
+
+#Mr Developer
+.mr.developer.cfg
+
+
+# Arquivos do PyDev
+.pydevproject
+
+# PyCharm
+.idea/*
+/.idea
+
+#Jpipe
+hs_err*
+
+nohup.out
+#logs
+*log-*.log
+*.log.*
+*.pid
+
+# Jenkins
+junit-baseproduto.xml
+
+# Node
+.grunt
+node_modules
+runner.html
